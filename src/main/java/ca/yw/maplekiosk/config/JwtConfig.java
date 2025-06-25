@@ -29,4 +29,8 @@ public class JwtConfig {
     public void setRefreshTokenExpirationDays(long refreshTokenExpirationDays) {
         this.refreshTokenExpirationDays = refreshTokenExpirationDays;
     }
+
+    public String getSecret() {
+        return secret;
+    }
 }
