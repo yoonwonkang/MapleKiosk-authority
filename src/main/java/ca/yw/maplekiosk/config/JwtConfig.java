@@ -6,31 +6,31 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Configuration
 @ConfigurationProperties(prefix = "jwt")
 public class JwtConfig {
-    private String secret;
-    private long accessTokenExpirationMinutes;
-    private long refreshTokenExpirationDays;
+  private String secret;
+  private long accessTokenExpirationMinutes;
+  private long refreshTokenExpirationDays;
 
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
+  public void setSecret(String secret) {
+    this.secret = secret;
+  }
 
-    public long getAccessTokenExpirationMinutes() {
-        return accessTokenExpirationMinutes;
-    }
+  public long getAccessTokenExpirationMinutes() {
+    return accessTokenExpirationMinutes;
+  }
 
-    public void setAccessTokenExpirationMinutes(long accessTokenExpirationMinutes) {
-        this.accessTokenExpirationMinutes = accessTokenExpirationMinutes;
-    }
+  public void setAccessTokenExpirationMinutes(long accessTokenExpirationMinutes) {
+    this.accessTokenExpirationMinutes = accessTokenExpirationMinutes;
+  }
 
-    public long getRefreshTokenExpirationDays() {
-        return refreshTokenExpirationDays;
-    }
+  public long getRefreshTokenExpirationDays() {
+    return refreshTokenExpirationDays;
+  }
 
-    public void setRefreshTokenExpirationDays(long refreshTokenExpirationDays) {
-        this.refreshTokenExpirationDays = refreshTokenExpirationDays;
-    }
+  public void setRefreshTokenExpirationDays(long refreshTokenExpirationDays) {
+    this.refreshTokenExpirationDays = refreshTokenExpirationDays;
+  }
 
-    public String getSecret() {
-        return secret;
-    }
+  public String getSecret() {
+    return secret;
+  }
 }
