@@ -24,8 +24,12 @@ public class JwtTokenProvider {
   *
   * @return
   */
-  private Key getKey() {
-    return Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8));
+  public Key getKey() {
+    return getKey(jwtConfig.getSecret());
+  }
+
+  public Key getKey(String secretKey) {
+    return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
   }
 
   public String createAccessToken(String username, String role) {
