@@ -20,11 +20,13 @@ public class JwtTokenProvider {
 
   private final JwtConfig jwtConfig;
 
+  private final Integer milliSeconds = 1000;
+
   /**
   *
   * @return
   */
-  public Key getKey() {
+  private Key getKey() {
     return getKey(jwtConfig.getSecret());
   }
 
@@ -37,7 +39,7 @@ public class JwtTokenProvider {
       .setSubject(username)
       .claim("role", role)
       .setIssuedAt(new Date())
-      .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccessTokenExpirationMinutes() * 60 * 1000))
+      .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccessTokenExpirationSeconds() * milliSeconds))
       .signWith(getKey(), SignatureAlgorithm.HS256)
       .compact();
   }
@@ -47,7 +49,7 @@ public class JwtTokenProvider {
       .setSubject(username)
       .claim("role", role)
       .setIssuedAt(new Date())
-      .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getRefreshTokenExpirationDays() * 24 * 60 * 60 * 1000))
+      .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getRefreshTokenExpirationSeconds() * milliSeconds))
       .signWith(getKey(), SignatureAlgorithm.HS256)
       .compact();
   }
