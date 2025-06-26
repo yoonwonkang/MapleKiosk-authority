@@ -34,23 +34,27 @@ public class JwtTokenProviderTest {
 
   @Test
   void createAccessToken_shouldReturnWrongNameToken() {
+    // wrong name
     String wrongName = "shQp1";
     String token = jwtTokenProvider.createAccessToken(wrongName, ORIGIN_SHOP_ROLE);
 
     assertTrue(jwtTokenProvider.validateToken(token));
     Claims claims = jwtTokenProvider.getClaims(token);
+    // when get name is not equal
     assertNotEquals(ORIGIN_SHOP_USER_NAME, claims.getSubject());
     assertEquals(ORIGIN_SHOP_ROLE, claims.get("role"));
   }
 
   @Test
   void createAccessToken_shouldReturnWrongRoleToken() {
+    // wrong role
     String wrongRole = "SHQP";
     String token = jwtTokenProvider.createAccessToken(ORIGIN_SHOP_USER_NAME, wrongRole);
 
     assertTrue(jwtTokenProvider.validateToken(token));
     Claims claims = jwtTokenProvider.getClaims(token);
     assertEquals(ORIGIN_SHOP_USER_NAME, claims.getSubject());
+    // when get role is not equal
     assertNotEquals(ORIGIN_SHOP_ROLE, claims.get("role"));
   }
 
@@ -60,16 +64,17 @@ void validateToken_shouldReturnFalse_whenTokenIsExpired() {
     String expiredToken = Jwts.builder()
       .setSubject(ORIGIN_SHOP_USER_NAME)
       .claim("role", ORIGIN_SHOP_ROLE)
-      .setIssuedAt(new Date(System.currentTimeMillis() - 1000 * 60 * 60)) // 1시간 전
-      .setExpiration(new Date(System.currentTimeMillis() - 1000 * 30)) // 30초 전에 만료
+      .setIssuedAt(new Date(System.currentTimeMillis() - 1000 * 60 * 60)) // already expired before 1 hour
+      .setExpiration(new Date(System.currentTimeMillis() - 1000 * 30)) // // already expired beofre 30 sec
       .signWith(key, SignatureAlgorithm.HS256)
       .compact();
+    //when the token check, expect false
     assertFalse(jwtTokenProvider.validateToken(expiredToken));
 }
 
   @Test
   void validateToken_shouldReturnFalse_whenSignatureIsInvalid() {
-      // 잘못된 Secret Key로 토큰 생성
+    // wrong secret Key use
     String wrongSecret = "wrongSecretWrongSecretWrongSecretWrongSecret";
     Key wrongKey = Keys.hmacShaKeyFor(wrongSecret.getBytes(StandardCharsets.UTF_8));
     String invalidToken = Jwts.builder()
@@ -79,8 +84,7 @@ void validateToken_shouldReturnFalse_whenTokenIsExpired() {
             .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 30분 유효
             .signWith(wrongKey, SignatureAlgorithm.HS256)
             .compact();
-
-    // 검증 시 false가 나와야 함
+    //when the token check, expect false
     assertFalse(jwtTokenProvider.validateToken(invalidToken));
 }
 
